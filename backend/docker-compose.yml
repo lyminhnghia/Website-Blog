@@ -3,7 +3,7 @@ version: '3.8'
 services:
   dev:
     container_name: backend_blog_dev
-    image: nestjs-api-dev:1.0.0
+    image: backend-blog-dev:1.0.0
     build:
       context: .
       target: development
@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
   prod:
     container_name: backend_blog_prod
-    image: nestjs-api-prod:1.0.0
+    image: backend-blog-prod:1.0.0
     build:
       context: .
       target: production
