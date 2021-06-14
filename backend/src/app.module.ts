@@ -23,23 +23,21 @@ import { ConfigService } from './shared/config/config.service';
         database: configService.environment.database.database,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: configService.environment.database.synchronize,
-        charset: 'utf8mb4'
+        charset: 'utf8mb4',
       }),
       inject: [ConfigService],
     }),
     UsersModule,
     AuthModule,
-    ConfigModule
+    ConfigModule,
   ],
-  controllers: [
-    AppController
-  ],
+  controllers: [AppController],
   providers: [
     AppService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
-    }
+    },
   ],
 })
-export class AppModule { }
+export class AppModule {}

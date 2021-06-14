@@ -8,12 +8,11 @@ import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private usersService: UsersService) {}
 
-    constructor(private usersService: UsersService) { }
-
-    @Get('me')
-    @Roles('user', 'premium', 'admin')
-    async getMe(@AuthUser() user: JwtPayload): Promise<User> {
-        return await this.usersService.findMe(user.id);
-    }
+  @Get('me')
+  @Roles('user', 'premium', 'admin')
+  async getMe(@AuthUser() user: JwtPayload): Promise<User> {
+    return await this.usersService.findMe(user.id);
+  }
 }

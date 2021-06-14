@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import * as mysql from 'mysql';
 
 interface CustomSql extends mysql.Connection {
-    execute: (query: string, args: any[]) => Promise<any>
+  execute: (query: string, args: any[]) => Promise<any>;
 }
 
 @Injectable()
 export class DatabaseService {
-    //A service if you don't want to use typeorm
-    //If you use typeorm you can delete it
-    /*
+  //A service if you don't want to use typeorm
+  //If you use typeorm you can delete it
+  /*
     private db;
 
     constructor(private config: ConfigService) {
@@ -59,4 +59,3 @@ export class DatabaseService {
     }
     */
 }
-
