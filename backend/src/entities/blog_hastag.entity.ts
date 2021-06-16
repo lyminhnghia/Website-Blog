@@ -1,5 +1,13 @@
-import { Entity, Column } from 'typeorm';
-import { BaseEntityBlog } from './base.entity';
+import { Entity, ManyToOne, JoinColumn } from 'typeorm';
+import { BaseEntityBlog, BlogEntity, HastagEntity } from '../entities';
 
 @Entity('blog_hastag')
-export class BlogHastagEntity extends BaseEntityBlog {}
+export class BlogHastagEntity extends BaseEntityBlog {
+  @ManyToOne((type) => BlogEntity)
+  @JoinColumn({ name: 'blog_id' })
+  blog: BlogEntity;
+
+  @ManyToOne((type) => HastagEntity)
+  @JoinColumn({ name: 'hastag_id' })
+  hastag: HastagEntity;
+}
