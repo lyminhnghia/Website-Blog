@@ -1,16 +1,42 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { BaseEntityBlog } from './base.entity';
+import { Enum } from '../const';
 
 @Entity('user')
-export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  email: string;
+export class UserEntity extends BaseEntityBlog {
+  @Column('varchar')
+  username: string;
 
   @Column({ default: true, select: false })
   password: string;
 
-  @Column()
-  role: 'admin' | 'manager' | 'user';
+  @Column('text')
+  first_name: string;
+
+  @Column('text')
+  last_name: string;
+
+  @Column('varchar')
+  email: string;
+
+  @Column('int')
+  gender: number;
+
+  @Column({
+    type: 'timestamp',
+  })
+  birthday: number;
+
+  @Column('varchar')
+  avatar: string;
+
+  @Column('int')
+  status: number;
+
+  @Column({
+    type: 'enum',
+    enum: Enum.Role,
+    default: Enum.Role.user,
+  })
+  role: Enum.Role;
 }
