@@ -7,7 +7,7 @@ export class UserEntity extends BaseEntityBlog {
   @Column('varchar')
   username: string;
 
-  @Column({ default: true, select: false })
+  @Column({ type: 'varchar', default: true, select: false })
   password: string;
 
   @Column('text')
@@ -19,18 +19,16 @@ export class UserEntity extends BaseEntityBlog {
   @Column('varchar')
   email: string;
 
-  @Column('int')
+  @Column('tinyint')
   gender: number;
 
-  @Column({
-    type: 'timestamp',
-  })
+  @Column('int')
   birthday: number;
 
   @Column('varchar')
   avatar: string;
 
-  @Column('int')
+  @Column('tinyint')
   status: number;
 
   @Column({
