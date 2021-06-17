@@ -13,7 +13,7 @@ async function bootstrap() {
   });
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
-  Logger.log(`Listened on PORT ${process.env.PORT || 5000}`);
-  await app.listen(process.env.PORT || 5000);
+  Logger.log(`Listened on PORT ${process.env.BACKEND_PORT || 5001}`);
+  await app.listen(process.env.BACKEND_PORT || 5001);
 }
 bootstrap();
