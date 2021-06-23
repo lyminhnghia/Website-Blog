@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsArray } from 'class-validator';
 import { BlogEntity } from 'src/entities';
 import { Enum } from 'src/shared';
 
@@ -16,6 +16,12 @@ export class BlogDto implements Readonly<BlogDto> {
 
   status: number;
 
+  @IsArray()
+  hastags: any;
+
+  @IsArray()
+  categories: any;
+
   public static formatRequestForm(dto: Partial<BlogDto>): BlogEntity {
     const blogEntity = new BlogEntity();
 
@@ -25,6 +31,8 @@ export class BlogDto implements Readonly<BlogDto> {
     blogEntity.content = JSON.stringify(dto.content);
     blogEntity.linkBackground = dto.link_background;
     blogEntity.status = dto?.status || Enum.Status.draft;
+    blogEntity.hastags = dto.hastags;
+    blogEntity.categories = dto.categories;
 
     return blogEntity;
   }
