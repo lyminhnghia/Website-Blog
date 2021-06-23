@@ -1,5 +1,5 @@
-import { Entity, Column } from 'typeorm';
-import { BaseEntityBlog } from 'src/entities';
+import { Entity, Column, ManyToMany } from 'typeorm';
+import { BaseEntityBlog, BlogEntity } from 'src/entities';
 
 @Entity('hastag')
 export class HastagEntity extends BaseEntityBlog {
@@ -8,4 +8,7 @@ export class HastagEntity extends BaseEntityBlog {
 
   @Column('text')
   description: string;
+
+  @ManyToMany((type) => BlogEntity, (blogs) => blogs.hastags)
+  blogs: BlogEntity[];
 }

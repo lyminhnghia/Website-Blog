@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CategoryEntity } from 'src/entities';
-import { CreateCategoryDto } from 'src/common/dto';
+import { CategoryDto } from 'src/common/dto';
+import { Enum } from 'src/shared';
 
 @Injectable()
 export class CategoryProvider {
@@ -11,8 +12,18 @@ export class CategoryProvider {
     private categoryRepository: Repository<CategoryEntity>,
   ) {}
 
-  async create(body: CreateCategoryDto): Promise<object> {
-    const categoryEntity = new CategoryEntity();
-    return {};
+  async create(body: CategoryDto): Promise<object> {
+    const categoryEntity = CategoryDto.formatCreateForm(body);
+
+    let dataCreated = await categoryEntity.save();
+
+    return {
+      data: CategoryDto.formatResponseDetails(dataCreated),
+      status: HttpStatus.CREATED,
+    };
+  }
+
+  async findByItem(): Promise<CategoryEntity> {
+    return;
   }
 }

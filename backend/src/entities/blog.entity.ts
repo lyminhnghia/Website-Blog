@@ -1,5 +1,5 @@
-import { Entity, Column } from 'typeorm';
-import { BaseEntityBlog } from 'src/entities';
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
+import { BaseEntityBlog, CategoryEntity, HastagEntity } from 'src/entities';
 
 @Entity('blog')
 export class BlogEntity extends BaseEntityBlog {
@@ -15,12 +15,20 @@ export class BlogEntity extends BaseEntityBlog {
   @Column('varchar')
   alias: string;
 
-  @Column('varchar')
-  link_backround: string;
+  @Column({ name: 'link_background', type: 'varchar' })
+  linkBackground: string;
 
-  @Column('tinyint')
-  number_view: number;
+  @Column({ name: 'number_view', type: 'tinyint' })
+  numberView: number;
 
   @Column('tinyint')
   status: number;
+
+  @ManyToMany((type) => CategoryEntity, (categories) => categories.blogs)
+  @JoinTable({ name: 'category_blog' })
+  categories: CategoryEntity[];
+
+  @ManyToMany((type) => HastagEntity, (hastags) => hastags.blogs)
+  @JoinTable({ name: 'blog_hastag' })
+  hastags: HastagEntity[];
 }

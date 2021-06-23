@@ -10,11 +10,11 @@ export class UserEntity extends BaseEntityBlog {
   @Column({ type: 'varchar', default: true, select: false })
   password: string;
 
-  @Column('text')
-  first_name: string;
+  @Column({ name: 'first_name', type: 'text' })
+  firstName: string;
 
-  @Column('text')
-  last_name: string;
+  @Column({ name: 'last_name', type: 'text' })
+  lastName: string;
 
   @Column('varchar')
   email: string;
