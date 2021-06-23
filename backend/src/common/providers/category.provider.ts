@@ -162,6 +162,43 @@ export class CategoryProvider {
     }
   }
 
+  async delete(categoryId: number): Promise<object> {
+    try {
+      const category = await this.categoryRepository
+        .createQueryBuilder('categories')
+        .where('categories.id = :categoryId', { categoryId })
+        .getOne();
+
+      // check exist category id
+      if (!category) {
+        return {
+          status: HttpStatus.NOT_FOUND,
+          message: [MessageConst.NOT_FOUND],
+        };
+      }
+
+      await this.categoryRepository
+        .createQueryBuilder()
+        .delete()
+        .from(CategoryEntity)
+        .where('categories.id = :categoryId', { categoryId })
+        .execute();
+
+      return {
+        status: HttpStatus.OK,
+        message: [MessageConst.DELETED],
+      };
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
+      };
+    }
+  }
+
   async findByPkAndTitle(
     categoryId: number,
     title: string,

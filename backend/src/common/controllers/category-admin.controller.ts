@@ -1,4 +1,13 @@
-import { Body, Controller, Post, Put, Get, Param, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Put,
+  Get,
+  Delete,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { CategoryDto } from 'src/common/dto';
 import { CategoryProvider } from 'src/common/providers';
 import { response } from 'src/shared';
@@ -39,6 +48,15 @@ export class CategoryAdminController {
   @Get('/category')
   async getCategory(@Query() query): Promise<object> {
     let objectData: object = await this.categoryProvider.get(query);
+
+    return response(objectData);
+  }
+
+  @Delete('/category/:categoryId')
+  async deleteCategory(@Param() params): Promise<object> {
+    let objectData: object = await this.categoryProvider.delete(
+      params.categoryId,
+    );
 
     return response(objectData);
   }
