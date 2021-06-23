@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
 import { BaseEntityBlog, CategoryEntity, HastagEntity } from 'src/entities';
 
-@Entity('blog')
+@Entity('blogs')
 export class BlogEntity extends BaseEntityBlog {
   @Column('text')
   title: string;
@@ -26,9 +26,9 @@ export class BlogEntity extends BaseEntityBlog {
 
   @ManyToMany((type) => CategoryEntity, (categories) => categories.blogs)
   @JoinTable({ name: 'category_blog' })
-  categories: CategoryEntity[];
+  categories: Promise<CategoryEntity[]>;
 
   @ManyToMany((type) => HastagEntity, (hastags) => hastags.blogs)
   @JoinTable({ name: 'blog_hastag' })
-  hastags: HastagEntity[];
+  hastags: Promise<HastagEntity[]>;
 }

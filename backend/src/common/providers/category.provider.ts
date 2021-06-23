@@ -58,12 +58,36 @@ export class CategoryProvider {
     };
   }
 
-  async findByPkAndTitle(id: number, title: string): Promise<CategoryEntity> {
+  async getById(categoryId: number): Promise<object> {
+    const category = await this.categoryRepository
+      .createQueryBuilder('categories')
+      .leftJoin('categories.blogs', 'blogs')
+      .where('categories.id = :categoryId', { categoryId })
+      .getOne();
+
+    // check exist category id
+    if (!category) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: [MessageConst.NOT_FOUND],
+      };
+    }
+
+    return {
+      data: CategoryDto.formatResponseDetails(category),
+      status: HttpStatus.OK,
+    };
+  }
+
+  async findByPkAndTitle(
+    categoryId: number,
+    title: string,
+  ): Promise<CategoryEntity> {
     return await this.categoryRepository
-      .createQueryBuilder('category')
-      .where('category.id != :categoryId AND category.title = :titleCategory', {
-        categoryId: id,
-        titleCategory: title,
+      .createQueryBuilder('categories')
+      .where('categories.id != :categoryId AND categories.title = :title', {
+        categoryId,
+        title,
       })
       .getOne();
   }

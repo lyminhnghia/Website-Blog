@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { CategoryEntity } from 'src/entities';
+import { CategoryEntity, BlogEntity } from 'src/entities';
 import { Enum } from 'src/shared';
 
 export class CategoryDto implements Readonly<CategoryDto> {
@@ -11,6 +11,8 @@ export class CategoryDto implements Readonly<CategoryDto> {
   description: object;
 
   status: number;
+
+  blogs: Promise<BlogEntity[]>;
 
   public static formatRequestForm(dto: Partial<CategoryDto>): CategoryEntity {
     const categoryEntity = new CategoryEntity();

@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToMany } from 'typeorm';
 import { BaseEntityBlog, BlogEntity } from 'src/entities';
 
-@Entity('category')
+@Entity('categories')
 export class CategoryEntity extends BaseEntityBlog {
   @Column('text')
   title: string;
@@ -13,5 +13,5 @@ export class CategoryEntity extends BaseEntityBlog {
   status: number;
 
   @ManyToMany((type) => BlogEntity, (blogs) => blogs.categories)
-  blogs: BlogEntity[];
+  blogs: Promise<BlogEntity[]>;
 }
