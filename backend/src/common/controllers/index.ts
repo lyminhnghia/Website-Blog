@@ -1,3 +1,1 @@
-import { CategoryModule } from './category.controller';
-
-export { CategoryModule };
+export * from './category-admin.controller';

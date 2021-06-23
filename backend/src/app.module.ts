@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from './config-database';
+import { ConfigModule, ConfigService } from 'src/config-database';
+import { CategoryModule } from 'src/common/modules';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ConfigModule, ConfigService } from './config-database';
       }),
       inject: [ConfigService],
     }),
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

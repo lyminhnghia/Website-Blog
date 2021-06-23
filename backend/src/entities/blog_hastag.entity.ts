@@ -1,5 +1,5 @@
 import { Entity, ManyToOne, JoinColumn } from 'typeorm';
-import { BaseEntityBlog, BlogEntity, HastagEntity } from '../entities';
+import { BaseEntityBlog, BlogEntity, HastagEntity } from 'src/entities';
 
 @Entity('blog_hastag')
 export class BlogHastagEntity extends BaseEntityBlog {

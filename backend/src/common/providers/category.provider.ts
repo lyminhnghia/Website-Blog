@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CategoryEntity } from '../../entities';
-import { Category } from '../interfaces';
+import { CategoryEntity } from 'src/entities';
+import { CreateCategoryDto } from 'src/common/dto';
 
 @Injectable()
 export class CategoryProvider {
@@ -11,8 +11,8 @@ export class CategoryProvider {
     private categoryRepository: Repository<CategoryEntity>,
   ) {}
 
-  async create(category: Category): Promise<Category> {
+  async create(body: CreateCategoryDto): Promise<object> {
     const categoryEntity = new CategoryEntity();
-    return;
+    return {};
   }
 }

@@ -1,6 +1,6 @@
 import { Entity, Column } from 'typeorm';
-import { BaseEntityBlog } from './base.entity';
-import { Enum } from '../common/constants';
+import { BaseEntityBlog } from 'src/entities';
+import { Enum } from 'src/shared';
 
 @Entity('user')
 export class UserEntity extends BaseEntityBlog {

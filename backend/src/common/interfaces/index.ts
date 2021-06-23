@@ -1,3 +1,1 @@
-import { Category } from './category.interface';
-
-export { Category };
+export * from './category.interface';
