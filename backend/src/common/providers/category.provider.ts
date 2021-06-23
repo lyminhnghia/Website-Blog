@@ -13,111 +13,151 @@ export class CategoryProvider {
   ) {}
 
   async create(body: CategoryDto): Promise<object> {
-    const categoryEntity = CategoryDto.formatRequestForm(body);
+    try {
+      const categoryEntity = CategoryDto.formatRequestForm(body);
 
-    // check exist Category title
-    const category = await this.categoryRepository.findOne({
-      where: {
-        title: categoryEntity.title,
-      },
-    });
+      // check exist Category title
+      const category = await this.categoryRepository.findOne({
+        where: {
+          title: categoryEntity.title,
+        },
+      });
 
-    if (category) {
+      if (category) {
+        return {
+          status: HttpStatus.BAD_REQUEST,
+          message: [MessageConst.TITLE_EXIST],
+        };
+      }
+
+      let dataCreated = await categoryEntity.save();
+
       return {
-        status: HttpStatus.BAD_REQUEST,
-        message: [MessageConst.TITLE_EXIST],
+        data: CategoryDto.formatResponseDetails(dataCreated),
+        status: HttpStatus.CREATED,
+        message: [MessageConst.CREATED],
+      };
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
       };
     }
-
-    let dataCreated = await categoryEntity.save();
-
-    return {
-      data: CategoryDto.formatResponseDetails(dataCreated),
-      status: HttpStatus.CREATED,
-      message: [MessageConst.CREATED],
-    };
   }
 
   async update(id: number, body: CategoryDto): Promise<object> {
-    const categoryEntity = CategoryDto.formatRequestForm(body);
+    try {
+      const categoryEntity = CategoryDto.formatRequestForm(body);
 
-    // check exist category id and category title
-    const category = await this.findByPkAndTitle(id, categoryEntity.title);
-    if (category) {
+      // check exist category id and category title
+      const category = await this.findByPkAndTitle(id, categoryEntity.title);
+      if (category) {
+        return {
+          status: HttpStatus.BAD_REQUEST,
+          message: [MessageConst.TITLE_EXIST],
+        };
+      }
+
+      let dataUpdated = await categoryEntity.save();
       return {
-        status: HttpStatus.BAD_REQUEST,
-        message: [MessageConst.TITLE_EXIST],
+        data: CategoryDto.formatResponseDetails(dataUpdated),
+        status: HttpStatus.OK,
+        message: [MessageConst.UPDATED],
+      };
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
       };
     }
-
-    let dataUpdated = await categoryEntity.save();
-    return {
-      data: CategoryDto.formatResponseDetails(dataUpdated),
-      status: HttpStatus.OK,
-      message: [MessageConst.UPDATED],
-    };
   }
 
   async getById(categoryId: number): Promise<object> {
-    const category = await this.categoryRepository
-      .createQueryBuilder('categories')
-      .leftJoin('categories.blogs', 'blogs')
-      .where('categories.id = :categoryId', { categoryId })
-      .getOne();
+    try {
+      const category = await this.categoryRepository
+        .createQueryBuilder('categories')
+        .leftJoin('categories.blogs', 'blogs')
+        .where('categories.id = :categoryId', { categoryId })
+        .getOne();
 
-    // check exist category id
-    if (!category) {
+      // check exist category id
+      if (!category) {
+        return {
+          status: HttpStatus.NOT_FOUND,
+          message: [MessageConst.NOT_FOUND],
+        };
+      }
+
       return {
-        status: HttpStatus.NOT_FOUND,
-        message: [MessageConst.NOT_FOUND],
+        data: CategoryDto.formatResponseDetails(category),
+        status: HttpStatus.OK,
+      };
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
       };
     }
-
-    return {
-      data: CategoryDto.formatResponseDetails(category),
-      status: HttpStatus.OK,
-    };
   }
 
   async get(query): Promise<object> {
-    let queryData: any = pageFormat(query);
-    if (!queryData.paging) {
-      const categories = await this.categoryRepository
-        .createQueryBuilder('categories')
-        .getMany();
-      let formatCategory: any = categories.map((item) =>
-        CategoryDto.formatResponseDetails(item),
-      );
-      return {
-        data: formatCategory,
-        total: formatCategory.length,
-        status: HttpStatus.OK,
-      };
-    } else {
-      const [
-        categories,
-        total,
-      ]: any = await this.categoryRepository.findAndCount({
-        where: {
-          title: Like('%' + queryData.filter || '' + '%'),
-        },
-        order: {
-          created: 'ASC',
-        },
-        take: queryData.size,
-        skip: queryData.page - 1,
-      });
+    try {
+      let queryData: any = pageFormat(query);
+      if (!queryData.paging) {
+        const categories = await this.categoryRepository
+          .createQueryBuilder('categories')
+          .getMany();
+        let formatCategory: any = categories.map((item) =>
+          CategoryDto.formatResponseDetails(item),
+        );
+        return {
+          data: formatCategory,
+          total: formatCategory.length,
+          status: HttpStatus.OK,
+        };
+      } else {
+        const [
+          categories,
+          total,
+        ]: any = await this.categoryRepository.findAndCount({
+          where: {
+            title: Like(`%${queryData.filter || ''}%`),
+          },
+          order: {
+            created: 'DESC',
+          },
+          take: queryData.size,
+          skip: queryData.page - 1,
+        });
 
-      let formatCategory: any = categories.map((item) =>
-        CategoryDto.formatResponseDetails(item),
-      );
+        let formatCategory: any = categories.map((item) =>
+          CategoryDto.formatResponseDetails(item),
+        );
 
-      return {
-        data: formatCategory,
-        total: total,
-        page: queryData.page,
-        size: queryData.size,
-        status: HttpStatus.OK,
+        return {
+          data: formatCategory,
+          total: total,
+          page: queryData.page,
+          size: queryData.size,
+          status: HttpStatus.OK,
+        };
+      }
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
       };
     }
   }

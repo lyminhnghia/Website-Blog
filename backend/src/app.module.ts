@@ -19,6 +19,7 @@ import { CategoryModule } from 'src/common/modules';
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: configService.environment.database.synchronize,
         charset: 'utf8mb4',
+        logging: true,
       }),
       inject: [ConfigService],
     }),
