@@ -48,20 +48,23 @@ export class HastagProvider {
     }
   }
 
-  async update(id: number, body: HastagDto): Promise<object> {
+  async update(id: string, body: HastagDto): Promise<object> {
     try {
-      const hastagEntity = HastagDto.formatRequestForm(body);
+      let hastagId: number = parseInt(id);
+      const hastagEntity = HastagDto.formatRequestForm({
+        id: hastagId,
+        ...body,
+      });
 
       // check exist hastag id and hastag title
-      const hastag = await this.findByPkAndTitle(id, hastagEntity.title);
+      const hastag = await this.findByPkAndTitle(hastagId, hastagEntity.title);
       if (hastag) {
         return {
           status: HttpStatus.BAD_REQUEST,
           message: [MessageConst.TITLE_EXIST],
         };
       }
-
-      let dataUpdated = await hastagEntity.save();
+      let dataUpdated = await this.hastagRepository.save(hastagEntity);
       return {
         data: HastagDto.formatResponseDetails(dataUpdated),
         status: HttpStatus.OK,

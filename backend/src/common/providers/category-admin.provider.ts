@@ -48,12 +48,19 @@ export class CategoryAdminProvider {
     }
   }
 
-  async update(id: number, body: CategoryDto): Promise<object> {
+  async update(id: string, body: CategoryDto): Promise<object> {
     try {
-      const categoryEntity = CategoryDto.formatRequestForm(body);
+      let categoryId: number = parseInt(id);
+      const categoryEntity = CategoryDto.formatRequestForm({
+        id: categoryId,
+        ...body,
+      });
 
       // check exist category id and category title
-      const category = await this.findByPkAndTitle(id, categoryEntity.title);
+      const category = await this.findByPkAndTitle(
+        categoryId,
+        categoryEntity.title,
+      );
       if (category) {
         return {
           status: HttpStatus.BAD_REQUEST,
@@ -61,7 +68,7 @@ export class CategoryAdminProvider {
         };
       }
 
-      let dataUpdated = await categoryEntity.save();
+      let dataUpdated = await this.categoryRepository.save(categoryEntity);
       return {
         data: CategoryDto.formatResponseDetails(dataUpdated),
         status: HttpStatus.OK,
