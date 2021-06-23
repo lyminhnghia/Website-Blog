@@ -13,7 +13,7 @@ export class CategoryProvider {
   ) {}
 
   async create(body: CategoryDto): Promise<object> {
-    const categoryEntity = CategoryDto.formatCreateForm(body);
+    const categoryEntity = CategoryDto.formatRequestForm(body);
 
     // check exist Category title
     const category = await this.categoryRepository.findOne({
@@ -24,7 +24,6 @@ export class CategoryProvider {
 
     if (category) {
       return {
-        data: null,
         status: HttpStatus.BAD_REQUEST,
         message: [MessageConst.TITLE_EXIST],
       };
@@ -37,5 +36,35 @@ export class CategoryProvider {
       status: HttpStatus.CREATED,
       message: [MessageConst.CREATED],
     };
+  }
+
+  async update(id: number, body: CategoryDto): Promise<object> {
+    const categoryEntity = CategoryDto.formatRequestForm(body);
+
+    // check exist category id and category title
+    const category = await this.findByPkAndTitle(id, categoryEntity.title);
+    if (category) {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: [MessageConst.TITLE_EXIST],
+      };
+    }
+
+    let dataUpdated = await categoryEntity.save();
+    return {
+      data: CategoryDto.formatResponseDetails(dataUpdated),
+      status: HttpStatus.OK,
+      message: [MessageConst.UPDATED],
+    };
+  }
+
+  async findByPkAndTitle(id: number, title: string): Promise<CategoryEntity> {
+    return await this.categoryRepository
+      .createQueryBuilder('category')
+      .where('category.id != :categoryId AND category.title = :titleCategory', {
+        categoryId: id,
+        titleCategory: title,
+      })
+      .getOne();
   }
 }

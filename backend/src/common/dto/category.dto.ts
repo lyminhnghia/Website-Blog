@@ -3,6 +3,8 @@ import { CategoryEntity } from 'src/entities';
 import { Enum } from 'src/shared';
 
 export class CategoryDto implements Readonly<CategoryDto> {
+  id: number;
+
   @IsNotEmpty()
   title: object;
 
@@ -10,12 +12,13 @@ export class CategoryDto implements Readonly<CategoryDto> {
 
   status: number;
 
-  public static formatCreateForm(dto: Partial<CategoryDto>): CategoryEntity {
+  public static formatRequestForm(dto: Partial<CategoryDto>): CategoryEntity {
     const categoryEntity = new CategoryEntity();
 
+    if (dto.id) categoryEntity.id = dto.id;
     categoryEntity.title = JSON.stringify(dto.title);
     categoryEntity.description = JSON.stringify(dto.description);
-    categoryEntity.status = Enum.Status.published;
+    categoryEntity.status = dto.status || Enum.Status.published;
 
     return categoryEntity;
   }
