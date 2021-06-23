@@ -1,3 +1,2 @@
-import { CategoryProvider } from './category.provider';
-
-export { CategoryProvider };
+export * from './category-admin.provider';
+export * from './category-common.provider';
