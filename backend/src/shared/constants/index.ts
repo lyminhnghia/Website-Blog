@@ -1,4 +1,4 @@
 import * as Enum from './enum.const';
-import * as Message from './message.const';
+import * as MessageConst from './message.const';
 
-export { Enum, Message };
+export { Enum, MessageConst };

@@ -12,6 +12,6 @@ export const configEnv = {
     username: process.env.MYSQL_USER_ACCOUNT,
     password: process.env.MYSQL_USER_PASSWORD,
     database: process.env.MYSQL_DATABASE,
-    synchronize: true,
+    synchronize: false,
   },
 };
