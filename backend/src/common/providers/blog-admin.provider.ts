@@ -4,7 +4,7 @@ import { Repository, Like } from 'typeorm';
 import { BlogEntity } from 'src/entities';
 import { CategoryAdminProvider, HastagProvider } from 'src/common/providers';
 import { BlogDto } from 'src/common/dto';
-import { MessageConst, pageFormat } from 'src/shared';
+import { Enum, MessageConst, pageFormat } from 'src/shared';
 
 @Injectable()
 export class BlogProvider {
@@ -28,7 +28,7 @@ export class BlogProvider {
         } else {
           return {
             status: HttpStatus.NOT_FOUND,
-            message: [''],
+            message: [MessageConst.NOT_FOUND_CATEGORY],
           };
         }
       }
@@ -42,7 +42,7 @@ export class BlogProvider {
         } else {
           return {
             status: HttpStatus.NOT_FOUND,
-            message: [''],
+            message: [MessageConst.NOT_FOUND_HASTAG],
           };
         }
       }
@@ -64,20 +64,33 @@ export class BlogProvider {
       }
 
       // create new blog
-      let newEntity = await blogEntity.save();
+      await blogEntity.save();
 
       if (blog) {
         return {
-          data: newEntity,
           status: HttpStatus.BAD_REQUEST,
           message: [MessageConst.TITLE_EXIST],
         };
       }
 
+      let message = [];
+      switch (blogEntity.status) {
+        case Enum.Status.published:
+          message.push(MessageConst.PUBLISHED_BLOG);
+          break;
+        case Enum.Status.draft:
+          message.push(MessageConst.CREATED_DRAFT_BLOG);
+          break;
+        default:
+          return {
+            status: HttpStatus.BAD_REQUEST,
+            message: [MessageConst.STATUS_ERROR],
+          };
+      }
+
       return {
-        data: BlogDto.formatResponseDetails(blogEntity),
         status: HttpStatus.CREATED,
-        message: [MessageConst.CREATED],
+        message: message,
       };
     } catch {
       (error) => {
