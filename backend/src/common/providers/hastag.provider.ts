@@ -180,4 +180,13 @@ export class HastagProvider {
       })
       .getOne();
   }
+
+  async findByPk(id: number): Promise<HastagEntity> {
+    return await this.hastagRepository
+      .createQueryBuilder('hastags')
+      .where('hastags.id != :id', {
+        id,
+      })
+      .getOne();
+  }
 }

@@ -13,5 +13,5 @@ export class CategoryEntity extends BaseEntityBlog {
   status: number;
 
   @ManyToMany((type) => BlogEntity, (blogs) => blogs.categories)
-  blogs: Promise<BlogEntity[]>;
+  blogs: BlogEntity[];
 }

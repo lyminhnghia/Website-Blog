@@ -15,10 +15,20 @@ export class BlogEntity extends BaseEntityBlog {
   @Column('varchar')
   alias: string;
 
-  @Column({ name: 'link_background', type: 'varchar' })
+  @Column({
+    name: 'link_background',
+    type: 'varchar',
+    default: null,
+    nullable: true,
+  })
   linkBackground: string;
 
-  @Column({ name: 'number_view', type: 'tinyint' })
+  @Column({
+    name: 'number_view',
+    type: 'tinyint',
+    default: 0,
+    nullable: true,
+  })
   numberView: number;
 
   @Column('tinyint')
@@ -26,9 +36,9 @@ export class BlogEntity extends BaseEntityBlog {
 
   @ManyToMany((type) => CategoryEntity, (categories) => categories.blogs)
   @JoinTable({ name: 'category_blog' })
-  categories: Promise<CategoryEntity[]>;
+  categories: CategoryEntity[];
 
   @ManyToMany((type) => HastagEntity, (hastags) => hastags.blogs)
   @JoinTable({ name: 'blog_hastag' })
-  hastags: Promise<HastagEntity[]>;
+  hastags: HastagEntity[];
 }

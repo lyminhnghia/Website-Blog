@@ -134,4 +134,13 @@ export class CategoryAdminProvider {
       })
       .getOne();
   }
+
+  async findByPk(id: number): Promise<CategoryEntity> {
+    return await this.categoryRepository
+      .createQueryBuilder('categories')
+      .where('categories.id != :id', {
+        id,
+      })
+      .getOne();
+  }
 }

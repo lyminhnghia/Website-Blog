@@ -10,5 +10,5 @@ export class HastagEntity extends BaseEntityBlog {
   description: string;
 
   @ManyToMany((type) => BlogEntity, (blogs) => blogs.hastags)
-  blogs: Promise<BlogEntity[]>;
+  blogs: BlogEntity[];
 }
