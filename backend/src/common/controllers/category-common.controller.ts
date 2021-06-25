@@ -21,4 +21,11 @@ export class CategoryCommonController {
 
     return response(objectData);
   }
+
+  @Get('/category-blog')
+  async getCategoryBlog(@Query() query): Promise<object> {
+    let objectData: object = await this.categoryProvider.getCategoryBlog(query);
+
+    return response(objectData);
+  }
 }

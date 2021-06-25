@@ -1,5 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import { CategoryEntity, BlogEntity } from 'src/entities';
+import { BlogDto } from 'src/common/dto';
 import { Enum } from 'src/shared';
 
 export class CategoryDto implements Readonly<CategoryDto> {
@@ -28,8 +29,28 @@ export class CategoryDto implements Readonly<CategoryDto> {
   public static formatResponseDetails(
     category: Partial<CategoryEntity>,
   ): object {
-    category.title = JSON.parse(category.title);
-    category.description = JSON.parse(category.description);
-    return category;
+    if (category.blogs) {
+      return {
+        ...category,
+        title: JSON.parse(category.title),
+        description: JSON.parse(category.description),
+        blogs: category.blogs.map((item) => ({
+          ...item,
+          title: JSON.parse(item.title),
+          description: JSON.parse(item.description),
+          content: JSON.parse(item.content),
+          alias: JSON.parse(item.alias),
+          hastags: item.hastags.map((hastagItem) => ({
+            id: hastagItem.id,
+            title: JSON.parse(hastagItem.title),
+          })),
+        })),
+      };
+    }
+    return {
+      ...category,
+      title: JSON.parse(category.title),
+      description: JSON.parse(category.description),
+    };
   }
 }

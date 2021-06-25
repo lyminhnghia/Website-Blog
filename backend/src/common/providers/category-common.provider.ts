@@ -16,8 +16,10 @@ export class CategoryCommonProvider {
     try {
       const category = await this.categoryRepository
         .createQueryBuilder('categories')
-        .leftJoin('categories.blogs', 'blogs')
+        .leftJoinAndSelect('categories.blogs', 'blogs')
+        .leftJoinAndSelect('blogs.hastags', 'hastags')
         .where('categories.id = :categoryId', { categoryId })
+        .orderBy('categories.created', 'DESC')
         .getOne();
 
       // check exist category id
@@ -47,15 +49,17 @@ export class CategoryCommonProvider {
     try {
       let queryData: any = pageFormat(query);
       if (!queryData.paging) {
-        const categories = await this.categoryRepository
+        const [
+          categories,
+          total,
+        ] = await this.categoryRepository
           .createQueryBuilder('categories')
-          .getMany();
-        let formatCategory: any = categories.map((item) =>
-          CategoryDto.formatResponseDetails(item),
-        );
+          .getManyAndCount();
         return {
-          data: formatCategory,
-          total: formatCategory.length,
+          data: categories.map((item) =>
+            CategoryDto.formatResponseDetails(item),
+          ),
+          total: total,
           status: HttpStatus.OK,
         };
       } else {
@@ -72,16 +76,66 @@ export class CategoryCommonProvider {
           take: queryData.size,
           skip: queryData.page - 1,
         });
-
-        let formatCategory: any = categories.map((item) =>
-          CategoryDto.formatResponseDetails(item),
-        );
-
         return {
-          data: formatCategory,
+          data: categories.map((item) =>
+            CategoryDto.formatResponseDetails(item),
+          ),
           total: total,
           page: queryData.page,
           size: queryData.size,
+          status: HttpStatus.OK,
+        };
+      }
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
+      };
+    }
+  }
+
+  async getCategoryBlog(query): Promise<object> {
+    try {
+      let queryData: any = pageFormat(query);
+      if (queryData.paging) {
+        const [categories, total] = await this.categoryRepository
+          .createQueryBuilder('categories')
+          .leftJoinAndSelect('categories.blogs', 'blogs')
+          .leftJoinAndSelect('blogs.hastags', 'hastags')
+          .skip(queryData.page - 1)
+          .take(queryData.size)
+          .where('categories.title LIKE :title', {
+            title: `%${queryData?.filter || ''}%`,
+          })
+          .orderBy('categories.created', 'DESC')
+          .getManyAndCount();
+        return {
+          data: categories.map((item) =>
+            CategoryDto.formatResponseDetails(item),
+          ),
+          total: total,
+          page: queryData.page,
+          size: queryData.size,
+          status: HttpStatus.OK,
+        };
+      } else {
+        const [categories, total] = await this.categoryRepository
+          .createQueryBuilder('categories')
+          .leftJoinAndSelect('categories.blogs', 'blogs')
+          .leftJoinAndSelect('blogs.hastags', 'hastags')
+          .where('categories.title LIKE :title', {
+            title: `%${queryData?.filter || ''}%`,
+          })
+          .orderBy('categories.created', 'DESC')
+          .getManyAndCount();
+        return {
+          data: categories.map((item) =>
+            CategoryDto.formatResponseDetails(item),
+          ),
+          total: total,
           status: HttpStatus.OK,
         };
       }
