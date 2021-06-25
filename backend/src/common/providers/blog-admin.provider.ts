@@ -102,4 +102,36 @@ export class BlogProvider {
       };
     }
   }
+
+  async getById(blogId: number): Promise<object> {
+    try {
+      const blog = await this.blogRepository
+        .createQueryBuilder('blogs')
+        .leftJoinAndSelect('blogs.categories', 'categories')
+        .leftJoinAndSelect('blogs.hastags', 'hastags')
+        .where('blogs.id = :blogId', { blogId })
+        .getOne();
+
+      // check exist blog id
+      if (!blog) {
+        return {
+          status: HttpStatus.NOT_FOUND,
+          message: [MessageConst.NOT_FOUND],
+        };
+      }
+
+      return {
+        data: BlogDto.formatResponseDetails(blog),
+        status: HttpStatus.OK,
+      };
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
+      };
+    }
+  }
 }

@@ -19,6 +19,12 @@ export class BlogController {
   @Post('blog')
   async createBlog(@Body() body: BlogDto): Promise<object> {
     let objectData: object = await this.blogProvider.create(body);
-    return response({ data: objectData });
+    return response(objectData);
+  }
+
+  @Get('blog/:blogId')
+  async getBlogById(@Param() params): Promise<object> {
+    let objectData: object = await this.blogProvider.getById(params.blogId);
+    return response(objectData);
   }
 }

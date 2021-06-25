@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsArray } from 'class-validator';
 import { BlogEntity } from 'src/entities';
 import { Enum, removeVietnameseFromString } from 'src/shared';
+import { CategoryDto, HastagDto } from 'src/common/dto';
 
 export class BlogDto implements Readonly<BlogDto> {
   id: number;
@@ -42,10 +43,18 @@ export class BlogDto implements Readonly<BlogDto> {
   }
 
   public static formatResponseDetails(blog: Partial<BlogEntity>): object {
-    blog.title = JSON.parse(blog.title);
-    blog.description = JSON.parse(blog.description);
-    blog.content = JSON.parse(blog.content);
-    blog.alias = JSON.parse(blog.alias);
-    return blog;
+    return {
+      ...blog,
+      title: JSON.parse(blog.title),
+      description: JSON.parse(blog.description),
+      content: JSON.parse(blog.content),
+      alias: JSON.parse(blog.alias),
+      categories: blog.categories.map((item) =>
+        CategoryDto.formatResponseDetails(item),
+      ),
+      hastags: blog.hastags.map((item) =>
+        HastagDto.formatResponseDetails(item),
+      ),
+    };
   }
 }
