@@ -135,6 +135,7 @@ export class HastagProvider {
     try {
       const hastag = await this.hastagRepository
         .createQueryBuilder('hastags')
+        .leftJoinAndSelect('hastags.blogs', 'blogs')
         .where('hastags.id = :hastagId', { hastagId })
         .getOne();
 
@@ -145,6 +146,14 @@ export class HastagProvider {
           message: [MessageConst.NOT_FOUND],
         };
       }
+
+      let blogIds = hastag.blogs.map((item) => ({ id: item.id }));
+
+      await this.hastagRepository
+        .createQueryBuilder()
+        .relation(HastagEntity, 'blogs')
+        .of({ id: hastagId })
+        .remove(blogIds);
 
       await this.hastagRepository
         .createQueryBuilder()

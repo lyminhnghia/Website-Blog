@@ -89,6 +89,7 @@ export class CategoryAdminProvider {
     try {
       const category = await this.categoryRepository
         .createQueryBuilder('categories')
+        .leftJoinAndSelect('categories.blogs', 'blogs')
         .where('categories.id = :categoryId', { categoryId })
         .getOne();
 
@@ -99,6 +100,14 @@ export class CategoryAdminProvider {
           message: [MessageConst.NOT_FOUND],
         };
       }
+
+      let blogIds = category.blogs.map((item) => ({ id: item.id }));
+
+      await this.categoryRepository
+        .createQueryBuilder()
+        .relation(CategoryEntity, 'blogs')
+        .of({ id: categoryId })
+        .remove(blogIds);
 
       await this.categoryRepository
         .createQueryBuilder()
