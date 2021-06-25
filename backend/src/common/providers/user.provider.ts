@@ -11,4 +11,18 @@ export class UserProvider {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
+
+  async create(body: UserDto): Promise<object> {
+    try {
+      return {};
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
+      };
+    }
+  }
 }

@@ -3,7 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from 'src/config-database';
-import { CategoryModule, HastagModule, BlogModule } from 'src/common/modules';
+import {
+  CategoryModule,
+  HastagModule,
+  BlogModule,
+  UserModule,
+} from 'src/common/modules';
 
 @Module({
   imports: [
@@ -26,6 +31,7 @@ import { CategoryModule, HastagModule, BlogModule } from 'src/common/modules';
     CategoryModule,
     HastagModule,
     BlogModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
