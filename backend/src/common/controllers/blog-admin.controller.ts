@@ -27,4 +27,10 @@ export class BlogController {
     let objectData: object = await this.blogProvider.getById(params.blogId);
     return response(objectData);
   }
+
+  @Delete('blog/:blogId')
+  async deleteBlog(@Param() params): Promise<object> {
+    let objectData: object = await this.blogProvider.delete(params.blogId);
+    return response(objectData);
+  }
 }

@@ -134,4 +134,58 @@ export class BlogProvider {
       };
     }
   }
+
+  async delete(blogId: number): Promise<object> {
+    try {
+      const blog = await this.blogRepository
+        .createQueryBuilder('blogs')
+        .leftJoinAndSelect('blogs.categories', 'categories')
+        .leftJoinAndSelect('blogs.hastags', 'hastags')
+        .where('blogs.id = :blogId', { blogId })
+        .getOne();
+
+      // check exist category id
+      if (!blog) {
+        return {
+          status: HttpStatus.NOT_FOUND,
+          message: [MessageConst.NOT_FOUND],
+        };
+      }
+
+      let categoryIds = blog.categories.map((item) => ({ id: item.id }));
+      let hastagIds = blog.hastags.map((item) => ({ id: item.id }));
+
+      await this.blogRepository
+        .createQueryBuilder()
+        .relation(BlogEntity, 'categories')
+        .of({ id: blogId })
+        .remove(categoryIds);
+
+      await this.blogRepository
+        .createQueryBuilder()
+        .relation(BlogEntity, 'hastags')
+        .of({ id: blogId })
+        .remove(hastagIds);
+
+      await this.blogRepository
+        .createQueryBuilder()
+        .delete()
+        .from(BlogEntity)
+        .where('blogs.id = :blogId', { blogId })
+        .execute();
+
+      return {
+        status: HttpStatus.OK,
+        message: [MessageConst.DELETED],
+      };
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
+      };
+    }
+  }
 }
