@@ -1,5 +1,5 @@
-import { Entity, Column } from 'typeorm';
-import { BaseEntityBlog } from 'src/entities';
+import { Entity, Column, OneToMany } from 'typeorm';
+import { BaseEntityBlog, BlogUserEntity } from 'src/entities';
 import { Enum } from 'src/shared';
 
 @Entity('user')
@@ -37,4 +37,7 @@ export class UserEntity extends BaseEntityBlog {
     default: Enum.Role.user,
   })
   role: Enum.Role;
+
+  @OneToMany(() => BlogUserEntity, (blog_user) => blog_user.user)
+  blogUsers: BlogUserEntity[];
 }

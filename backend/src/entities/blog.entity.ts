@@ -1,5 +1,10 @@
-import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
-import { BaseEntityBlog, CategoryEntity, HastagEntity } from 'src/entities';
+import { Entity, Column, ManyToMany, JoinTable, OneToMany } from 'typeorm';
+import {
+  BaseEntityBlog,
+  CategoryEntity,
+  HastagEntity,
+  BlogUserEntity,
+} from 'src/entities';
 
 @Entity('blogs')
 export class BlogEntity extends BaseEntityBlog {
@@ -12,7 +17,7 @@ export class BlogEntity extends BaseEntityBlog {
   @Column('text')
   content: string;
 
-  @Column('varchar')
+  @Column('text')
   alias: string;
 
   @Column({
@@ -41,4 +46,7 @@ export class BlogEntity extends BaseEntityBlog {
   @ManyToMany((type) => HastagEntity, (hastags) => hastags.blogs)
   @JoinTable({ name: 'blog_hastag' })
   hastags: HastagEntity[];
+
+  @OneToMany(() => BlogUserEntity, (blog_user) => blog_user.blog)
+  blogUsers: BlogUserEntity[];
 }
