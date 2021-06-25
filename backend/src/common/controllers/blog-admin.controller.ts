@@ -22,6 +22,15 @@ export class BlogController {
     return response(objectData);
   }
 
+  @Put('blog/:blogId')
+  async updateBlog(@Param() params, @Body() body: BlogDto): Promise<object> {
+    let objectData: object = await this.blogProvider.update(
+      params.blogId,
+      body,
+    );
+    return response(objectData);
+  }
+
   @Get('blog/:blogId')
   async getBlogById(@Param() params): Promise<object> {
     let objectData: object = await this.blogProvider.getById(params.blogId);
