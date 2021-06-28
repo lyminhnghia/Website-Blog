@@ -14,7 +14,13 @@ export class UserProvider {
 
   async create(body: UserDto): Promise<object> {
     try {
-      return {};
+      const userEntity = UserDto.formatRequestForm(body);
+      let newUser = await userEntity.save();
+      return {
+        data: newUser,
+        status: HttpStatus.CREATED,
+        message: [MessageConst.CREATED],
+      };
     } catch {
       (error) => {
         return {
