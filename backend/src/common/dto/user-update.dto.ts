@@ -3,13 +3,9 @@ import { UserEntity } from 'src/entities';
 import * as bcrypt from 'bcrypt';
 import { Enum } from 'src/shared';
 
-export class UserDto implements Readonly<UserDto> {
+export class UserUpdateDto implements Readonly<UserUpdateDto> {
   id: number;
 
-  @IsNotEmpty()
-  username: string;
-
-  @IsNotEmpty()
   password: string;
 
   @IsNotEmpty()
@@ -28,20 +24,20 @@ export class UserDto implements Readonly<UserDto> {
 
   status: number;
 
-  public static formatRequestForm(dto: Partial<UserDto>): UserEntity {
-    const userEntity = new UserEntity();
+  public static formatRequestForm(
+    entity: UserEntity,
+    dto: Partial<UserUpdateDto>,
+  ): UserEntity {
+    if (dto.password) entity.password = bcrypt.hashSync(dto.password, 10);
+    entity.firstName = dto.firstName;
+    entity.lastName = dto.lastName;
+    entity.email = dto?.email || null;
+    entity.gender = dto?.gender || null;
+    entity.birthday = dto?.birthday || null;
+    entity.role = dto?.role || Enum.Role.user;
+    entity.status = dto?.status || Enum.Status.published;
 
-    userEntity.username = dto.username;
-    userEntity.password = bcrypt.hashSync(dto.password, 10);
-    userEntity.firstName = dto.firstName;
-    userEntity.lastName = dto.lastName;
-    userEntity.email = dto?.email || null;
-    userEntity.gender = dto?.gender || null;
-    userEntity.birthday = dto?.birthday || null;
-    userEntity.role = dto?.role || Enum.Role.user;
-    userEntity.status = dto?.status || Enum.Status.published;
-
-    return userEntity;
+    return entity;
   }
 
   public static formatResponse(user: Partial<UserEntity>): object {

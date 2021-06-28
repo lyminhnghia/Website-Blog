@@ -8,7 +8,7 @@ import {
   Query,
   Param,
 } from '@nestjs/common';
-import { UserDto } from 'src/common/dto';
+import { UserDto, UserUpdateDto } from 'src/common/dto';
 import { UserProvider } from 'src/common/providers';
 import { response } from 'src/shared';
 
@@ -19,6 +19,19 @@ export class UserController {
   @Post('user')
   async createUser(@Body() body: UserDto): Promise<object> {
     let objectData: object = await this.userProvider.create(body);
+
+    return response(objectData);
+  }
+
+  @Put('user/:userId')
+  async updateUser(
+    @Param() params,
+    @Body() body: UserUpdateDto,
+  ): Promise<object> {
+    let objectData: object = await this.userProvider.update(
+      params.userId,
+      body,
+    );
 
     return response(objectData);
   }
