@@ -277,6 +277,9 @@ export class BlogProvider {
         .execute();
 
       return {
+        data: {
+          id: blogId,
+        },
         status: HttpStatus.OK,
         message: [MessageConst.DELETED],
       };

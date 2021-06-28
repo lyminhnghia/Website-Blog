@@ -35,4 +35,11 @@ export class UserController {
 
     return response(objectData);
   }
+
+  @Delete('user/:userId')
+  async deleteUser(@Param() params): Promise<object> {
+    let objectData: object = await this.userProvider.delete(params.userId);
+
+    return response(objectData);
+  }
 }

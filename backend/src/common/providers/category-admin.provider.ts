@@ -117,6 +117,9 @@ export class CategoryAdminProvider {
         .execute();
 
       return {
+        data: {
+          id: categoryId,
+        },
         status: HttpStatus.OK,
         message: [MessageConst.DELETED],
       };

@@ -111,6 +111,40 @@ export class UserProvider {
     }
   }
 
+  async delete(id: number): Promise<object> {
+    try {
+      const userEntity: UserEntity = await this.findByPk(id);
+      if (!userEntity) {
+        return {
+          status: HttpStatus.NOT_FOUND,
+          message: [MessageConst.NOT_FOUND],
+        };
+      }
+      await this.userRepository
+        .createQueryBuilder()
+        .delete()
+        .from(UserEntity)
+        .where('user.id = :userId', { userId: id })
+        .execute();
+
+      return {
+        data: {
+          id: id,
+        },
+        status: HttpStatus.OK,
+        message: [MessageConst.DELETED],
+      };
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
+      };
+    }
+  }
+
   async findByPk(id: number): Promise<UserEntity> {
     return await this.userRepository
       .createQueryBuilder('user')

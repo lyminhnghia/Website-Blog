@@ -163,6 +163,9 @@ export class HastagProvider {
         .execute();
 
       return {
+        data: {
+          id: hastagId,
+        },
         status: HttpStatus.OK,
         message: [MessageConst.DELETED],
       };
