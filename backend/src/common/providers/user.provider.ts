@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
 import { UserEntity } from 'src/entities';
 import { UserDto, UserUpdateDto } from 'src/common/dto';
-import { MessageConst, pageFormat, response } from 'src/shared';
+import { MessageConst, pageFormat } from 'src/shared';
 import stringFormat from 'string-format';
 
 @Injectable()
@@ -99,6 +99,49 @@ export class UserProvider {
         data: UserUpdateDto.formatResponse(newUser),
         status: HttpStatus.OK,
         message: [MessageConst.UPDATED],
+      };
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
+      };
+    }
+  }
+
+  async get(query: object): Promise<object> {
+    try {
+      let queryData: any = pageFormat(query);
+      if (!queryData.paging) {
+        const [users, total] = await this.userRepository
+          .createQueryBuilder('user')
+          .getManyAndCount();
+        return {
+          data: users.map((item) => UserDto.formatResponse(item)),
+          total: total,
+          status: HttpStatus.OK,
+        };
+      }
+      const [users, total] = await this.userRepository
+        .createQueryBuilder('user')
+        .skip(queryData.page - 1)
+        .take(queryData.size)
+        .where(
+          'user.username LIKE :filter OR user.first_name LIKE :filter OR user.last_name LIKE :filter',
+          {
+            filter: `%${queryData?.filter || ''}%`,
+          },
+        )
+        .orderBy('user.created', 'DESC')
+        .getManyAndCount();
+      return {
+        data: users.map((item) => UserDto.formatResponse(item)),
+        total: total,
+        page: queryData.page,
+        size: queryData.size,
+        status: HttpStatus.OK,
       };
     } catch {
       (error) => {

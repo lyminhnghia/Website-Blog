@@ -36,6 +36,13 @@ export class UserController {
     return response(objectData);
   }
 
+  @Get('user')
+  async getUser(@Query() query): Promise<object> {
+    let objectData: object = await this.userProvider.get(query);
+
+    return response(objectData);
+  }
+
   @Delete('user/:userId')
   async deleteUser(@Param() params): Promise<object> {
     let objectData: object = await this.userProvider.delete(params.userId);

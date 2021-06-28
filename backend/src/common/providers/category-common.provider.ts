@@ -45,7 +45,7 @@ export class CategoryCommonProvider {
     }
   }
 
-  async get(query): Promise<object> {
+  async get(query: object): Promise<object> {
     try {
       let queryData: any = pageFormat(query);
       if (!queryData.paging) {
@@ -62,30 +62,27 @@ export class CategoryCommonProvider {
           total: total,
           status: HttpStatus.OK,
         };
-      } else {
-        const [
-          categories,
-          total,
-        ]: any = await this.categoryRepository.findAndCount({
-          where: {
-            title: Like(`%${queryData.filter || ''}%`),
-          },
-          order: {
-            created: 'DESC',
-          },
-          take: queryData.size,
-          skip: queryData.page - 1,
-        });
-        return {
-          data: categories.map((item) =>
-            CategoryDto.formatResponseDetails(item),
-          ),
-          total: total,
-          page: queryData.page,
-          size: queryData.size,
-          status: HttpStatus.OK,
-        };
       }
+      const [
+        categories,
+        total,
+      ]: any = await this.categoryRepository.findAndCount({
+        where: {
+          title: Like(`%${queryData.filter || ''}%`),
+        },
+        order: {
+          created: 'DESC',
+        },
+        take: queryData.size,
+        skip: queryData.page - 1,
+      });
+      return {
+        data: categories.map((item) => CategoryDto.formatResponseDetails(item)),
+        total: total,
+        page: queryData.page,
+        size: queryData.size,
+        status: HttpStatus.OK,
+      };
     } catch {
       (error) => {
         return {
@@ -121,24 +118,21 @@ export class CategoryCommonProvider {
           size: queryData.size,
           status: HttpStatus.OK,
         };
-      } else {
-        const [categories, total] = await this.categoryRepository
-          .createQueryBuilder('categories')
-          .leftJoinAndSelect('categories.blogs', 'blogs')
-          .leftJoinAndSelect('blogs.hastags', 'hastags')
-          .where('categories.title LIKE :title', {
-            title: `%${queryData?.filter || ''}%`,
-          })
-          .orderBy('categories.created', 'DESC')
-          .getManyAndCount();
-        return {
-          data: categories.map((item) =>
-            CategoryDto.formatResponseDetails(item),
-          ),
-          total: total,
-          status: HttpStatus.OK,
-        };
       }
+      const [categories, total] = await this.categoryRepository
+        .createQueryBuilder('categories')
+        .leftJoinAndSelect('categories.blogs', 'blogs')
+        .leftJoinAndSelect('blogs.hastags', 'hastags')
+        .where('categories.title LIKE :title', {
+          title: `%${queryData?.filter || ''}%`,
+        })
+        .orderBy('categories.created', 'DESC')
+        .getManyAndCount();
+      return {
+        data: categories.map((item) => CategoryDto.formatResponseDetails(item)),
+        total: total,
+        status: HttpStatus.OK,
+      };
     } catch {
       (error) => {
         return {
