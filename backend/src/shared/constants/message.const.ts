@@ -11,3 +11,6 @@ export const NOT_FOUND_HASTAG = 'Không tồn tại hastag';
 export const PUBLISHED_BLOG = 'Đăng bài thành công';
 export const CREATED_DRAFT_BLOG = 'Tạo bản nháp thành công';
 export const STATUS_ERROR = 'Lỗi status';
+
+export const LENGTH_MESSAGE = 'Yêu cầu {0}';
+export const MESSAGE_EXIST = '{0} đã tồn tại';

@@ -16,16 +16,32 @@ export class UserEntity extends BaseEntityBlog {
   @Column({ name: 'last_name', type: 'text' })
   lastName: string;
 
-  @Column('varchar')
+  @Column({
+    type: 'varchar',
+    default: null,
+    nullable: true,
+  })
   email: string;
 
-  @Column('tinyint')
+  @Column({
+    type: 'tinyint',
+    default: null,
+    nullable: true,
+  })
   gender: number;
 
-  @Column('int')
+  @Column({
+    type: 'int',
+    default: null,
+    nullable: true,
+  })
   birthday: number;
 
-  @Column('varchar')
+  @Column({
+    type: 'varchar',
+    default: null,
+    nullable: true,
+  })
   avatar: string;
 
   @Column('tinyint')

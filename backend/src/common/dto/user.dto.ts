@@ -12,6 +12,12 @@ export class UserDto implements Readonly<UserDto> {
   @IsNotEmpty()
   password: string;
 
+  @IsNotEmpty()
+  firstName: string;
+
+  @IsNotEmpty()
+  lastName: string;
+
   email: string;
 
   gender: number;
@@ -27,13 +33,32 @@ export class UserDto implements Readonly<UserDto> {
 
     if (dto.id) userEntity.id = dto.id;
     userEntity.username = dto.username;
-    userEntity.password = bcrypt.hash(dto.password, 10);
-    userEntity.email = dto?.email || '';
+    userEntity.password = bcrypt.hashSync(dto.password, 10);
+    userEntity.firstName = dto.firstName;
+    userEntity.lastName = dto.lastName;
+    userEntity.email = dto?.email || null;
     userEntity.gender = dto?.gender || null;
     userEntity.birthday = dto?.birthday || null;
     userEntity.role = dto?.role || Enum.Role.user;
     userEntity.status = dto?.status || Enum.Status.published;
 
     return userEntity;
+  }
+
+  public static formatResponse(user: Partial<UserEntity>): object {
+    return {
+      id: user.id,
+      username: user.username,
+      first_name: user.firstName,
+      last_name: user.lastName,
+      email: user.email,
+      gender: user.gender,
+      birthday: user.birthday,
+      avatar: user.avatar,
+      status: user.status,
+      role: user.role,
+      created: user.created,
+      modified: user.modified,
+    };
   }
 }
