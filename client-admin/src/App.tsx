@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { Login, NotFound } from "./pages";
 import { PathConstant } from "./const";
 import store from "./redux";
+import "./theme/styles";
 
 const App = () => {
   return (
