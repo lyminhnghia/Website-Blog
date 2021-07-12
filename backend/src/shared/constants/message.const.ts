@@ -16,3 +16,5 @@ export const LENGTH_MESSAGE = 'Yêu cầu {0}';
 export const MESSAGE_EXIST = '{0} đã tồn tại';
 export const MESSAGE_NOT_EXIST = '{0} không tồn tại';
 export const MESSAGE_IS_INVALID = '{0} không đúng';
+export const UNAUTHORIZED_NO_TOKEN = 'Unauthorized no token';
+export const UNAUTHORIZED_BAD_TOKEN = 'Unauthorized bad token';

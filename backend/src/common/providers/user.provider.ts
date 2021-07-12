@@ -1,6 +1,6 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Repository } from 'typeorm';
 import { UserEntity } from 'src/entities';
 import { UserDto, UserUpdateDto } from 'src/common/dto';
 import { MessageConst, pageFormat } from 'src/shared';

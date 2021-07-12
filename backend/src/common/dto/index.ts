@@ -4,3 +4,4 @@ export * from './blog.dto';
 export * from './user.dto';
 export * from './user-update.dto';
 export * from './login.dto';
+export * from './Jwt.Dto';

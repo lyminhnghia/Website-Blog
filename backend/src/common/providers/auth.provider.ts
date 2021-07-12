@@ -1,6 +1,6 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { UserEntity } from 'src/entities';
-import { LoginDto } from 'src/common/dto';
+import { LoginDto, UserDto } from 'src/common/dto';
 import { UserProvider } from 'src/common/providers';
 import { ConfigService } from 'src/config-database';
 import { MessageConst } from 'src/shared';
@@ -44,6 +44,33 @@ export class AuthProvider {
         },
         message: [MessageConst.OK],
         status: HttpStatus.CREATED,
+      };
+    } catch {
+      (error) => {
+        return {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: [MessageConst.ERROR],
+          error: error,
+        };
+      };
+    }
+  }
+
+  async profile(id: number): Promise<object> {
+    try {
+      const user = await this.userProvider.findByPk(id);
+
+      if (!user) {
+        return {
+          status: HttpStatus.BAD_REQUEST,
+          message: [stringFormat(MessageConst.MESSAGE_NOT_EXIST, 'id')],
+        };
+      }
+
+      return {
+        data: UserDto.formatResponse(user),
+        status: HttpStatus.OK,
+        message: [MessageConst.OK],
       };
     } catch {
       (error) => {
