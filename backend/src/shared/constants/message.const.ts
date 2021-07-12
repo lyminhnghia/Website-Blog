@@ -14,3 +14,5 @@ export const STATUS_ERROR = 'Lỗi status';
 
 export const LENGTH_MESSAGE = 'Yêu cầu {0}';
 export const MESSAGE_EXIST = '{0} đã tồn tại';
+export const MESSAGE_NOT_EXIST = '{0} không tồn tại';
+export const MESSAGE_IS_INVALID = '{0} không đúng';

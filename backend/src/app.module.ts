@@ -8,6 +8,7 @@ import {
   HastagModule,
   BlogModule,
   UserModule,
+  AuthModule,
 } from 'src/common/modules';
 
 @Module({
@@ -32,6 +33,7 @@ import {
     HastagModule,
     BlogModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

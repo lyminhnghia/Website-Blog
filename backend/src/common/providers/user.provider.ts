@@ -196,4 +196,18 @@ export class UserProvider {
       })
       .getOne();
   }
+
+  async findByUsername(username: string): Promise<UserEntity> {
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .select([
+        'user.id',
+        'user.username',
+        'user.password',
+        'user.role',
+        'user.avatar',
+      ])
+      .where('user.username = :username', { username: username })
+      .getOne();
+  }
 }
