@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import { Login, NotFound } from "./pages";
@@ -6,7 +6,7 @@ import { PathConstant } from "./const";
 import store from "./redux";
 import "./theme/styles";
 
-const App = () => {
+const App: FC = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
