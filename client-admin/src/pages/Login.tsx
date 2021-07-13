@@ -1,15 +1,7 @@
 import { FC, memo, useState } from "react";
-import {
-  makeStyles,
-  Avatar,
-  Box,
-  Typography,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-} from "@material-ui/core";
+import { makeStyles, Avatar, Box, Typography } from "@material-ui/core";
 import { LockOutlined, PersonOutlined } from "@material-ui/icons";
-import { ButtonNative } from "../components";
+import { ButtonNative, InputIcon } from "../components";
 import { ILogin } from "../interface";
 
 const Login: FC = () => {
@@ -24,6 +16,10 @@ const Login: FC = () => {
     setFormLogin({ ...formLogin, [event.target.name]: event.target.value });
   };
 
+  const onClickButton = (): void => {
+    console.log("runnn");
+  };
+
   return (
     <Box className={defaultClasses.root}>
       <Box className={defaultClasses.paper}>
@@ -31,27 +27,25 @@ const Login: FC = () => {
           <LockOutlined />
         </Avatar>
         <Typography>Đăng nhập</Typography>
-        <FormControl className={defaultClasses.formInput} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-amount">Tài khoản</InputLabel>
-          <OutlinedInput
-            name="username"
-            onChange={onChangeInput}
-            value={formLogin.username}
-            startAdornment={<PersonOutlined />}
-            labelWidth={75}
-          />
-        </FormControl>
-        <FormControl className={defaultClasses.formInput} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-amount">Mật khẩu</InputLabel>
-          <OutlinedInput
-            name="password"
-            onChange={onChangeInput}
-            value={formLogin.password}
-            startAdornment={<LockOutlined />}
-            labelWidth={75}
-          />
-        </FormControl>
-        <ButtonNative content="Đăng nhập" maxWidth />
+        <InputIcon
+          content="Tài khoản"
+          name="username"
+          onChange={onChangeInput}
+          value={formLogin.username}
+          startAdornment={<PersonOutlined />}
+          classes={{ inputAdornedStart: defaultClasses.inputAdornedStart }}
+          labelWidth={75}
+        />
+        <InputIcon
+          content="Mật khẩu"
+          name="password"
+          onChange={onChangeInput}
+          value={formLogin.password}
+          startAdornment={<LockOutlined />}
+          classes={{ inputAdornedStart: defaultClasses.inputAdornedStart }}
+          labelWidth={75}
+        />
+        <ButtonNative content="Đăng nhập" onClick={onClickButton} />
       </Box>
     </Box>
   );
@@ -78,8 +72,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 16,
     boxShadow: "0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%)",
   },
-  formInput: {
-    width: "100%",
-    margin: "20px 0 10px",
+  inputAdornedStart: {
+    padding: 16,
   },
 }));

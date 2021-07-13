@@ -1,13 +1,15 @@
 import { FC, memo } from "react";
-import PropTypes from "prop-types";
-import { makeStyles, Button } from "@material-ui/core";
+import { makeStyles, Button, ButtonProps } from "@material-ui/core";
 import clsx from "clsx";
 
-type IButtonProps = PropTypes.InferProps<typeof propTypes>;
+interface Props extends Omit<ButtonProps, "color"> {
+  content: string;
+  className?: string;
+}
 
-const ButtonNative: FC<IButtonProps> = (props) => {
-  const { content, maxWidth, className, ...otherProps } = props;
-  const defaultClasses = useStyles({ maxWidth: maxWidth });
+const ButtonNative: FC<Props> = (props) => {
+  const { content, className, ...otherProps } = props;
+  const defaultClasses = useStyles();
 
   return (
     <Button className={clsx(defaultClasses.root, className)} {...otherProps}>
@@ -16,18 +18,6 @@ const ButtonNative: FC<IButtonProps> = (props) => {
   );
 };
 
-const propTypes = {
-  content: PropTypes.string.isRequired,
-  maxWidth: PropTypes.bool,
-  className: PropTypes.string,
-  otherProps: PropTypes.any,
-};
-
-const defaultProps = {};
-
-ButtonNative.propTypes = propTypes;
-ButtonNative.defaultProps = defaultProps;
-
 export default memo(ButtonNative);
 
 const useStyles = makeStyles(() => ({
@@ -35,7 +25,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "#EF5845",
     color: "#FFFF",
     textTransform: "none",
-    minWidth: (props: any) => (props.maxWidth ? "100%" : 100),
+    padding: "6px 16px",
     borderRadius: 2,
     "&:hover": {
       backgroundColor: "#D93444",
