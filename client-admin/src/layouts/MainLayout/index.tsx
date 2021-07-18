@@ -3,19 +3,12 @@ import PropTypes from "prop-types";
 import { makeStyles, Box } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Redirect, Switch } from "react-router-dom";
-import { } from "../../const";
-
+import {} from "../../const";
 
 const MainLayout = () => {
   const defaultClasses = useStyles();
 
-  return (
-    <>
-      <Box className={defaultClasses.root}>
-        
-      </Box>
-    </>
-  );
+  return <Box className={defaultClasses.root}></Box>;
 };
 
 MainLayout.propTypes = {
