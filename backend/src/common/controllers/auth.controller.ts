@@ -4,10 +4,15 @@ import {
   Post,
   Put,
   Get,
-  Delete,
-  Query,
   Param,
+  Res,
+  HttpStatus,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { diskStorage } from 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Express } from 'express';
 import {
   LoginDto,
   JwtDto,
@@ -17,6 +22,7 @@ import {
 import { AuthProvider } from 'src/common/providers';
 import { Enum, response } from 'src/shared';
 import { Roles, AuthUser } from 'src/common/decorators';
+import { editFileName, imageFileFilter } from 'src/shared';
 
 @Controller('auth')
 export class AuthController {
@@ -66,10 +72,30 @@ export class AuthController {
   }
 
   @Post('upload')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './images',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
   @Roles(Enum.Role.admin, Enum.Role.manager, Enum.Role.user)
-  async uploadImage(@AuthUser() user: JwtDto): Promise<object> {
-    // let objectData: object = await this.authProvider.profile(user.id);
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<object> {
+    return response({
+      data: {
+        originalname: file.originalname,
+        filename: file.filename,
+      },
+      status: HttpStatus.OK,
+    });
+  }
 
-    return response({});
+  @Get('image/:image_name')
+  seeUploadedFile(@Param('image_name') image, @Res() res) {
+    return res.sendFile(image, { root: './images' });
   }
 }
