@@ -7,7 +7,7 @@ export class UserEntity extends BaseEntityBlog {
   @Column('varchar')
   username: string;
 
-  @Column({ type: 'varchar', default: true, select: false })
+  @Column({ type: 'varchar', default: true })
   password: string;
 
   @Column({ name: 'first_name', type: 'text' })

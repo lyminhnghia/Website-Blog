@@ -1,7 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
 import { UserEntity } from 'src/entities';
-import * as bcrypt from 'bcrypt';
-import { Enum } from 'src/shared';
 
 export class ProfileDto implements Readonly<ProfileDto> {
   @IsNotEmpty()
