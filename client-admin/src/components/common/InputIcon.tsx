@@ -22,13 +22,7 @@ const InputIcon: FC<Props> = (props) => {
       className={clsx(defaultClasses.formInput, className)}
       variant="outlined"
     >
-      <InputLabel
-        classes={{
-          root: defaultClasses.label,
-        }}
-      >
-        {content}
-      </InputLabel>
+      <InputLabel>{content}</InputLabel>
       <OutlinedInput {...otherProps} />
     </FormControl>
   );
@@ -40,8 +34,5 @@ const useStyles = makeStyles(() => ({
   formInput: {
     width: "100%",
     margin: "20px 0 10px",
-  },
-  label: {
-    color: "#EF5845",
   },
 }));

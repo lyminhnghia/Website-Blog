@@ -23,29 +23,40 @@ const Login: FC = () => {
   return (
     <Box className={defaultClasses.root}>
       <Box className={defaultClasses.paper}>
-        <Avatar>
-          <LockOutlined />
-        </Avatar>
-        <Typography>Đăng nhập</Typography>
+        <Box className={defaultClasses.header}>
+          <Avatar className={defaultClasses.avatar}>
+            <PersonOutlined className={defaultClasses.iconHeader} />
+          </Avatar>
+          <Typography className={defaultClasses.contentHeader}>
+            Đăng nhập
+          </Typography>
+        </Box>
         <InputIcon
           content="Tài khoản"
           name="username"
           onChange={onChangeInput}
           value={formLogin.username}
-          startAdornment={<PersonOutlined />}
-          classes={{ inputAdornedStart: defaultClasses.inputAdornedStart }}
+          startAdornment={<PersonOutlined className={defaultClasses.icon} />}
+          classes={{
+            inputAdornedStart: defaultClasses.inputAdornedStart,
+          }}
           labelWidth={75}
         />
         <InputIcon
           content="Mật khẩu"
           name="password"
+          type="password"
           onChange={onChangeInput}
           value={formLogin.password}
-          startAdornment={<LockOutlined />}
-          classes={{ inputAdornedStart: defaultClasses.inputAdornedStart }}
+          startAdornment={<LockOutlined className={defaultClasses.icon} />}
+          classes={{
+            inputAdornedStart: defaultClasses.inputAdornedStart,
+          }}
           labelWidth={75}
         />
-        <ButtonNative content="Đăng nhập" onClick={onClickButton} />
+        <Box className={defaultClasses.bottom}>
+          <ButtonNative content="Đăng nhập" onClick={onClickButton} />
+        </Box>
       </Box>
     </Box>
   );
@@ -72,7 +83,38 @@ const useStyles = makeStyles((theme) => ({
     padding: 16,
     boxShadow: "0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%)",
   },
+  header: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    width: 80,
+    height: 80,
+    backgroundColor: "#2979ff",
+  },
+  iconHeader: {
+    fontSize: 50,
+  },
+  contentHeader: {
+    fontSize: 36,
+    fontWeight: 600,
+    margin: "8px 0px 4px",
+    color: "rgba(0, 0, 0, 0.5)",
+  },
   inputAdornedStart: {
     padding: 16,
+  },
+  icon: {
+    color: "rgba(0, 0, 0, 0.5)",
+  },
+  bottom: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 8,
   },
 }));
