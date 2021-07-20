@@ -3,11 +3,7 @@ import { UserEntity } from 'src/entities';
 import * as bcrypt from 'bcrypt';
 import { Enum } from 'src/shared';
 
-export class UserUpdateDto implements Readonly<UserUpdateDto> {
-  id: number;
-
-  password: string;
-
+export class ProfileDto implements Readonly<ProfileDto> {
   @IsNotEmpty()
   first_name: string;
 
@@ -20,22 +16,17 @@ export class UserUpdateDto implements Readonly<UserUpdateDto> {
 
   birthday: number;
 
-  role: number;
-
-  status: number;
+  avatar: string;
 
   public static formatRequestForm(
+    dto: Partial<ProfileDto>,
     entity: UserEntity,
-    dto: Partial<UserUpdateDto>,
   ): UserEntity {
-    if (dto.password) entity.password = bcrypt.hashSync(dto.password, 10);
     entity.firstName = dto.first_name;
     entity.lastName = dto.last_name;
     entity.email = dto?.email || null;
     entity.gender = dto?.gender || null;
     entity.birthday = dto?.birthday || null;
-    entity.role = dto?.role || Enum.Role.user;
-    entity.status = dto?.status || Enum.Status.published;
 
     return entity;
   }
@@ -43,7 +34,6 @@ export class UserUpdateDto implements Readonly<UserUpdateDto> {
   public static formatResponse(user: Partial<UserEntity>): object {
     return {
       id: user.id,
-      username: user.username,
       first_name: user.firstName,
       last_name: user.lastName,
       email: user.email,
@@ -52,8 +42,6 @@ export class UserUpdateDto implements Readonly<UserUpdateDto> {
       avatar: user.avatar,
       status: user.status,
       role: user.role,
-      created: user.created,
-      modified: user.modified,
     };
   }
 }

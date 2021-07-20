@@ -8,7 +8,7 @@ import {
   Query,
   Param,
 } from '@nestjs/common';
-import { LoginDto, JwtDto } from 'src/common/dto';
+import { LoginDto, JwtDto, ProfileDto } from 'src/common/dto';
 import { AuthProvider } from 'src/common/providers';
 import { Enum, response } from 'src/shared';
 import { Roles, AuthUser } from 'src/common/decorators';
@@ -30,5 +30,35 @@ export class AuthController {
     let objectData: object = await this.authProvider.profile(user.id);
 
     return response(objectData);
+  }
+
+  @Put('profile')
+  @Roles(Enum.Role.admin, Enum.Role.manager, Enum.Role.user)
+  async updateProfile(
+    @AuthUser() user: JwtDto,
+    @Body() body: ProfileDto,
+  ): Promise<object> {
+    let objectData: object = await this.authProvider.updateProfile(
+      user.id,
+      body,
+    );
+
+    return response(objectData);
+  }
+
+  @Put('change-password')
+  @Roles(Enum.Role.admin, Enum.Role.manager, Enum.Role.user)
+  async updatePassword(@AuthUser() user: JwtDto): Promise<object> {
+    // let objectData: object = await this.authProvider.profile(user.id);
+
+    return response({});
+  }
+
+  @Post('upload')
+  @Roles(Enum.Role.admin, Enum.Role.manager, Enum.Role.user)
+  async uploadImage(@AuthUser() user: JwtDto): Promise<object> {
+    // let objectData: object = await this.authProvider.profile(user.id);
+
+    return response({});
   }
 }

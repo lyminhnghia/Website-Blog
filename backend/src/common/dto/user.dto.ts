@@ -13,10 +13,10 @@ export class UserDto implements Readonly<UserDto> {
   password: string;
 
   @IsNotEmpty()
-  firstName: string;
+  first_name: string;
 
   @IsNotEmpty()
-  lastName: string;
+  last_name: string;
 
   email: string;
 
@@ -33,8 +33,8 @@ export class UserDto implements Readonly<UserDto> {
 
     userEntity.username = dto.username;
     userEntity.password = bcrypt.hashSync(dto.password, 10);
-    userEntity.firstName = dto.firstName;
-    userEntity.lastName = dto.lastName;
+    userEntity.firstName = dto.first_name;
+    userEntity.lastName = dto.last_name;
     userEntity.email = dto?.email || null;
     userEntity.gender = dto?.gender || null;
     userEntity.birthday = dto?.birthday || null;
