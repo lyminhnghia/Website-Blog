@@ -2,7 +2,11 @@ import { FC, memo, useState } from "react";
 import { makeStyles, Avatar, Box, Typography } from "@material-ui/core";
 import { LockOutlined, PersonOutlined } from "@material-ui/icons";
 import { ButtonNative, InputIcon } from "../components";
-import { ILogin } from "../interface";
+
+interface ILogin {
+  username: string;
+  password: string;
+}
 
 const Login: FC = () => {
   const defaultClasses = useStyles();

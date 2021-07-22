@@ -4,6 +4,7 @@ import { makeStyles, Box } from "@material-ui/core";
 import { Redirect, Switch, Route, RouterProps } from "react-router-dom";
 import { hasLogin } from "../../utils";
 import { PathConstant } from "../../const";
+import Sidebar from "./components/Sidebar";
 
 const MainLayout = () => {
   const defaultClasses = useStyles();
@@ -11,9 +12,12 @@ const MainLayout = () => {
 
   return (
     <Box className={defaultClasses.root}>
-      <Switch>
-        {/* <AuthenticationRoute exact path={PathConstant.BLOGS_ADD} component={PostBlog} /> */}
-      </Switch>
+      <Sidebar />
+      <main className={defaultClasses.main}>
+        <Switch>
+          {/* <AuthenticationRoute exact path={PathConstant.BLOGS_ADD} component={PostBlog} /> */}
+        </Switch>
+      </main>
     </Box>
   );
 };
@@ -35,7 +39,7 @@ const useStyles = makeStyles({
   },
   main: {
     flexGrow: 1,
-    minHeight: "calc(100vh - 60px)",
+    minHeight: "100vh",
     backgroundColor: "#fafafb",
   },
 });

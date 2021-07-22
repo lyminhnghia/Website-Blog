@@ -1,3 +1,9 @@
 export const ROOT = "/";
 export const LOGIN = "/login";
 export const NOT_FOUND = "/not-found";
+export const BLOGS_ADD = "/blogs/add";
+export const BLOGS = "/blogs";
+export const BLOGS_CATEGORIES = "/categories";
+export const ACCOUNT = "/account";
+export const HASTAG = "/hastags";
+export const PROFILE = "/profile";
