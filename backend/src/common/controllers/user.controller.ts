@@ -10,13 +10,15 @@ import {
 } from '@nestjs/common';
 import { UserDto, UserUpdateDto } from 'src/common/dto';
 import { UserProvider } from 'src/common/providers';
-import { response } from 'src/shared';
+import { Roles } from 'src/common/decorators';
+import { Enum, response } from 'src/shared';
 
 @Controller('admin')
 export class UserController {
   constructor(private readonly userProvider: UserProvider) {}
 
   @Post('user')
+  // @Roles(Enum.Role.admin)
   async createUser(@Body() body: UserDto): Promise<object> {
     let objectData: object = await this.userProvider.create(body);
 
@@ -24,6 +26,7 @@ export class UserController {
   }
 
   @Put('user/:userId')
+  @Roles(Enum.Role.admin)
   async updateUser(
     @Param() params,
     @Body() body: UserUpdateDto,
@@ -37,6 +40,7 @@ export class UserController {
   }
 
   @Get('user')
+  @Roles(Enum.Role.admin)
   async getUser(@Query() query): Promise<object> {
     let objectData: object = await this.userProvider.get(query);
 
@@ -44,6 +48,7 @@ export class UserController {
   }
 
   @Delete('user/:userId')
+  @Roles(Enum.Role.admin)
   async deleteUser(@Param() params): Promise<object> {
     let objectData: object = await this.userProvider.delete(params.userId);
 
