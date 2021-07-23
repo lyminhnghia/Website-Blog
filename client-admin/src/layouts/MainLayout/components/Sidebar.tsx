@@ -65,11 +65,11 @@ const useStyles = makeStyles({
   root: {
     position: "sticky",
     width: DRAWER_WIDTH_OPEN,
-    height: "100vh",
+    height: "calc(100vh - 56px)",
     minWidth: DRAWER_WIDTH_OPEN,
-    top: 0,
+    top: 56,
     overflowY: "auto",
-    background: "#3e4045",
+    background: "#18191a",
   },
   list: {
     padding: 0,

@@ -79,14 +79,16 @@ export default memo(SidebarWithChildren);
 
 const useStyles = makeStyles({
   root: {
-    background: "rgba(239, 88, 69, 0.2)",
+    background: "rgba(41, 98, 255, 0.2)",
   },
   item: {
     minHeight: 48,
     padding: "8px 14px",
     color: "white",
     borderRadius: 4,
-    "&:hover": { background: "rgba(239, 88, 69, 0.3)" },
+    "&:hover": {
+      background: "rgba(41, 98, 255, 0.3)",
+    },
     "& svg": {
       fontSize: 16,
     },

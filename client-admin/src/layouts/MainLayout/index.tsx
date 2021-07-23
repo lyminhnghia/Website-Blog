@@ -1,33 +1,37 @@
-import React, { FC, memo } from "react";
-import PropTypes from "prop-types";
-import { makeStyles, Box } from "@material-ui/core";
+import { FC, memo, useState } from "react";
+import { makeStyles, useTheme, useMediaQuery, Box } from "@material-ui/core";
 import { Redirect, Switch, Route, RouterProps } from "react-router-dom";
 import { hasLogin } from "../../utils";
 import { PathConstant } from "../../const";
 import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
 
 const MainLayout = () => {
   const defaultClasses = useStyles();
   const isChecked = hasLogin();
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
+
+  const [openSidebar, setOpenSidebar] = useState<boolean>(false);
+
+  const onChangeSidebar = (): void => setOpenSidebar(!openSidebar);
 
   return (
-    <Box className={defaultClasses.root}>
-      <Sidebar />
-      <main className={defaultClasses.main}>
-        <Switch>
-          {/* <AuthenticationRoute exact path={PathConstant.BLOGS_ADD} component={PostBlog} /> */}
-        </Switch>
-      </main>
-    </Box>
+    <>
+      <Header
+        isDisplayMenuIcon={!isDesktop}
+        onChangeSidebar={onChangeSidebar}
+      />
+      <Box className={defaultClasses.root}>
+        {(isDesktop || openSidebar) && <Sidebar />}
+        <main className={defaultClasses.main}>
+          <Switch>
+            {/* <AuthenticationRoute exact path={PathConstant.BLOGS_ADD} component={PostBlog} /> */}
+          </Switch>
+        </main>
+      </Box>
+    </>
   );
-};
-
-MainLayout.propTypes = {
-  classes: PropTypes.object,
-};
-
-MainLayout.defaultProps = {
-  classes: {},
 };
 
 export default memo(MainLayout);
@@ -39,7 +43,7 @@ const useStyles = makeStyles({
   },
   main: {
     flexGrow: 1,
-    minHeight: "100vh",
+    minHeight: "calc(100vh - 56px)",
     backgroundColor: "#fafafb",
   },
 });
