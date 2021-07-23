@@ -57,6 +57,10 @@ const SIDEBAR_DATA: Array<IPropsChildren> = [
         text: "Quản lý danh mục",
         path: PathConstant.BLOGS_CATEGORIES,
       },
+      {
+        text: "Quản lý hastag",
+        path: PathConstant.BLOGS_HASTAG,
+      },
     ],
   },
 ];
