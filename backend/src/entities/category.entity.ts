@@ -1,7 +1,7 @@
-import { Entity, Column } from 'typeorm';
-import { BaseEntityBlog } from '../entities';
+import { Entity, Column, ManyToMany } from 'typeorm';
+import { BaseEntityBlog, BlogEntity } from 'src/entities';
 
-@Entity('category')
+@Entity('categories')
 export class CategoryEntity extends BaseEntityBlog {
   @Column('text')
   title: string;
@@ -11,4 +11,7 @@ export class CategoryEntity extends BaseEntityBlog {
 
   @Column('tinyint')
   status: number;
+
+  @ManyToMany((type) => BlogEntity, (blogs) => blogs.categories)
+  blogs: BlogEntity[];
 }
